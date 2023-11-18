@@ -1,2 +1,11 @@
-console.log("hola bola");
-/// you can use nodemon to dont restart the server each time you made changes
+const express = require("express");
+
+const app = express();
+
+app.get("/hello", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.listen("5000", () => {
+  console.log("server statred on port 5000");
+});

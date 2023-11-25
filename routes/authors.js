@@ -2,30 +2,24 @@ const express = require("express");
 const router = express.Router();
 const { Author } = require("../models/Authors");
 
-const authors = [
-  {
-    id: 1,
-    firstName: "Younes",
-    lastName: "Outerbah",
-    nationality: "Algerian",
-    img: "default-img.png",
-  },
-  {
-    id: 2,
-    firstName: "Mohamed",
-    lastName: "Outerbah",
-    nationality: "Algerian",
-    img: "default-img.png",
-  },
-];
-
-router.get("/", (req, res) => {
-  res.send(authors);
+router.get("/", async (req, res) => {
+  try {
+    const authorList = await Author.find();
+    res.send(authorList);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
 });
 
-router.get("/:id", (req, res) => {
-  const author = authors.find((a) => a.id === +a.id);
-  author ? res.status(200).json(author) : res.status(404).json({ message: "author not found" });
+router.get("/:id", async (req, res) => {
+  try {
+    const author = await Author.findById(req.params.id);
+    author ? res.status(200).json(author) : res.status(404).json({ message: "Author Not Found" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something Went Wrong" });
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -46,11 +40,25 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {
-  const author = authors.find((b) => b.id === parseInt(req.params.id));
-  author
-    ? res.status(200).json({ message: "Author Has Been Updated" })
-    : res.status(404).json({ message: "Author Not Found" });
+router.put("/:id", async (req, res) => {
+  try {
+    const author = await Author.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          nationality: req.body.nationality,
+          img: req.body.img,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(author);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;

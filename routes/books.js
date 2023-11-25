@@ -48,4 +48,28 @@ router.post("/", (req, res) => {
   res.status(201).json(book);
 });
 
+router.put("/:id", (req, res) => {
+  const schema = Joi.object({
+    name: Joi.string().trim(),
+    author: Joi.string().trim(),
+    price: Joi.number().min(3),
+  });
+
+  const { error } = schema.validate(req.body);
+
+  error && res.status(400).json({ message: error.details[0].message });
+
+  const book = books.find((b) => b.id === parseInt(req.params.id));
+  book
+    ? res.status(200).json({ message: "Book Has Been Updated" })
+    : res.status(404).json({ message: "Book Not Found" });
+});
+
+router.delete("/:id", (req, res) => {
+  const book = books.find((b) => b.id === parseInt(req.params.id));
+  book
+    ? res.status(200).json({ message: "Book Has Been Deleted" })
+    : res.status(404).json({ message: "Book Not Found" });
+});
+
 module.exports = router;

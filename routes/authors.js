@@ -61,4 +61,14 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const author = await Author.findById(req.params.id);
+    author
+      ? (await Author.findByIdAndDelete(req.params.id),
+        res.status(200).json({ message: "author has been deleted" }))
+      : res.status(404).json({ message: "author not found" });
+  } catch (error) {}
+});
+
 module.exports = router;

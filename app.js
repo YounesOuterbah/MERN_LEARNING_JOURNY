@@ -3,6 +3,7 @@ const app = express();
 const booksPath = require("./routes/books");
 const authorsPath = require("./routes/authors");
 const mongoose = require("mongoose");
+const logger = require("./middlewares/logger");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -12,6 +13,8 @@ mongoose
   .catch((error) => console.log("Connection Failed To MongoDB", error));
 
 app.use(express.json());
+
+app.use(logger);
 
 app.use("/books", booksPath);
 app.use("/authors", authorsPath);

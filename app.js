@@ -4,6 +4,7 @@ const booksPath = require("./routes/books");
 const authorsPath = require("./routes/authors");
 const mongoose = require("mongoose");
 const logger = require("./middlewares/logger");
+const { notFound, errorHandler } = require("./middlewares/errors");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -13,11 +14,13 @@ mongoose
   .catch((error) => console.log("Connection Failed To MongoDB", error));
 
 app.use(express.json());
-
 app.use(logger);
 
 app.use("/books", booksPath);
 app.use("/authors", authorsPath);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>

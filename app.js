@@ -3,6 +3,7 @@ const app = express();
 const booksPath = require("./routes/books");
 const authorsPath = require("./routes/authors");
 const authPath = require("./routes/auth");
+const usersPath = require("./routes/users");
 const mongoose = require("mongoose");
 const logger = require("./middlewares/logger");
 const { notFound, errorHandler } = require("./middlewares/errors");
@@ -20,6 +21,7 @@ app.use(logger);
 app.use("/books", booksPath);
 app.use("/authors", authorsPath);
 app.use("/auth", authPath);
+app.use("/users", usersPath);
 
 app.use(notFound);
 app.use(errorHandler);

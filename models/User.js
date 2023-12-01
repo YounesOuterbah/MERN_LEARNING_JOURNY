@@ -5,18 +5,18 @@ const UserSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required,
+      required: true,
       trim: true,
       unique: true,
     },
     username: {
       type: String,
-      required,
+      required: true,
       trim: true,
     },
     password: {
       type: String,
-      required,
+      required: true,
       minlength: 6,
     },
     isAdmin: {
@@ -41,7 +41,7 @@ const validateRegisterUser = (obj) => {
 
 const validateLoginUser = (obj) => {
   const schema = Joi.object({
-    username: Joi.string().trim().required(),
+    email: Joi.string().trim().required(),
     password: Joi.string().required(),
   });
   return schema.validate(obj);

@@ -8,7 +8,10 @@ const mongoose = require("mongoose");
 const logger = require("./middlewares/logger");
 const { notFound, errorHandler } = require("./middlewares/errors");
 const dotenv = require("dotenv");
+const connectToDB = require("./config/db");
 dotenv.config();
+
+connectToDB();
 
 mongoose
   .connect(process.env.MONGO_URL)
